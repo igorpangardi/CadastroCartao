@@ -23,8 +23,6 @@ public class CartaoDeCredito {
 	@JoinColumn(name = "id_cliente")
 	@JsonIgnore
 	private Cliente cliente;
-
-	
 	
 	public CartaoDeCredito(Cliente cliente) {
 		this.cliente = cliente;
