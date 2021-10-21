@@ -1,6 +1,6 @@
 package com.cadastro.cartao.controller.dto;
 
-import com.cadastro.cartao.modelo.CartaoDeCredito;
+import com.cadastro.cartao.modelo.Cliente;
 
 import lombok.Data;
 
@@ -9,11 +9,14 @@ public class CartaoDeCreditoDTO {
 
 	private Long id_cartao;
 	private String numeroCartao;
+
+	public CartaoDeCreditoDTO(Cliente cliente) {
+		this.id_cartao = cliente.getCartaoDeCredito().getId_cartao();
+		this.numeroCartao = cliente.getCartaoDeCredito().getNumeroCartao();
+	}
 	
-	
-	public CartaoDeCreditoDTO(CartaoDeCredito cartaoDeCredito) {
-		this.id_cartao = cartaoDeCredito.getId_cartao();
-		this.numeroCartao = cartaoDeCredito.getNumeroCartao();
+	public CartaoDeCreditoDTO() {
+		
 	}
 	
 }

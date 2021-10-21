@@ -1,11 +1,11 @@
 package com.cadastro.cartao.service;
 
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cadastro.cartao.controller.dto.ClienteConsultaDTO;
 import com.cadastro.cartao.controller.dto.ClienteDTO;
 import com.cadastro.cartao.modelo.CartaoDeCredito;
 import com.cadastro.cartao.modelo.Cliente;
@@ -23,21 +23,22 @@ public class ClienteService {
 
 	Random random = new Random();
 
-	public CartaoDeCredito inserir(ClienteDTO clienteDTO, Cliente cliente) {
-		
+	public Cliente validaScore(ClienteDTO clienteDTO) {
+
 		int score = random.nextInt(1000);
-		
+
 		if (score >= 700 && clienteDTO.getIdade() >= 20) {
-			CartaoDeCredito cartaoCredito = cadastraCartao(cliente);
-			return cartaoCredito;
+			Cliente cliente = cadastraCartao(clienteDTO);
+			return cliente;
 		}
-		
+
 		return null;
 	}
 
-	private CartaoDeCredito cadastraCartao(Cliente cliente) {
+	private Cliente cadastraCartao(ClienteDTO clienteDTO) {
 
-		CartaoDeCredito cartaoCredito = new CartaoDeCredito(cliente);
+		CartaoDeCredito cartaoDeCredito = new CartaoDeCredito();
+
 		StringBuffer sb = new StringBuffer();
 
 		for (int i = 0; i < 16; i++) {
@@ -48,23 +49,30 @@ public class ClienteService {
 			}
 		}
 
+		cartaoDeCredito.setNumeroCartao(sb.toString());
+
 		int codigoSeguranca = 0;
-		
-		cartaoCredito.setNumeroCartao(sb.toString());
 		while (codigoSeguranca < 100) {
 			codigoSeguranca = random.nextInt(1000);
 		}
-		
-		cartaoCredito.setCodigoSegurança(codigoSeguranca);
+		cartaoDeCredito.setCodigoSegurança(codigoSeguranca);
+		cartaoDeCreditoRepository.save(cartaoDeCredito);
 
-		cartaoDeCreditoRepository.save(cartaoCredito);
-	
-		return cartaoCredito;
+		Cliente cliente = new Cliente(clienteDTO, cartaoDeCredito);
+
+		return cliente;
 
 	}
 
 	public Cliente consultaPorCpf(String cpf) {
 		return clienteRepository.findByCpf(cpf);
+	}
+
+	public List<Cliente> listaCadastroPorCpf() {
+
+		List<Cliente> listaDeClientes = clienteRepository.findAll();
+		
+		return listaDeClientes;
 	}
 
 }

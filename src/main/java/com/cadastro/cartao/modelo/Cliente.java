@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import com.cadastro.cartao.controller.dto.ClienteDTO;
 
@@ -17,8 +19,18 @@ public class Cliente {
 	private Long id_cliente;
 	private String nome;
 	private Long idade;
-	private String cpf;	
-	private String possuiCartao = "não";
+	private String cpf;
+	@OneToOne
+	@JoinColumn(name = "id_cartao")
+	private CartaoDeCredito cartaoDeCredito;
+	
+	public Cliente(ClienteDTO clienteDTO, CartaoDeCredito cartaoDeCredito) {
+		this.id_cliente = clienteDTO.getId_cliente();
+		this.nome = clienteDTO.getNome();
+		this.idade = clienteDTO.getIdade();
+		this.cpf = clienteDTO.getCpf();
+		this.cartaoDeCredito = cartaoDeCredito;
+	}
 	
 	public Cliente(ClienteDTO clienteDTO) {
 		this.id_cliente = clienteDTO.getId_cliente();
