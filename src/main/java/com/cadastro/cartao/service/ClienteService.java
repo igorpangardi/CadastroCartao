@@ -75,4 +75,9 @@ public class ClienteService {
 		return listaDeClientes;
 	}
 
+	public void deletarUsuario(String cpf) {
+		Cliente cliente = clienteRepository.findByCpf(cpf);
+		clienteRepository.delete(cliente);
+	}
+
 }

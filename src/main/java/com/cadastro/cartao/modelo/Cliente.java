@@ -1,5 +1,6 @@
 package com.cadastro.cartao.modelo;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,7 +21,7 @@ public class Cliente {
 	private String nome;
 	private Long idade;
 	private String cpf;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "id_cartao")
 	private CartaoDeCredito cartaoDeCredito;
 	
